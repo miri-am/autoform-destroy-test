@@ -1,0 +1,65 @@
+<head>
+    <title>Autoform</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+    {{> addProduct}}
+</body>
+<!-- ADD Product TEMPLATE -->
+<template name="addProduct">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color: #5cb85c;">
+        </div>
+        <div class="panel-body">
+            {{#autoForm id="addProductForm" type="insert" collection="Products"}} {{> afArrayField name='communication' id="nothingForm" template="communication"}}
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Create Product</button>
+            </div>
+            {{/autoForm}}
+        </div>
+    </div>
+</template>
+
+<!--copied and adjusted from https://github.com/aldeed/meteor-autoform/tree/master/templates/bootstrap3/components/afArrayField-->
+<template name="afArrayField_communication">
+    <div class="panel panel-default">
+        <div class="panel-heading">{{afFieldLabelText name=this.atts.name}}</div>
+        {{#if afFieldIsInvalid name=this.atts.name}}
+        <div class="panel-body has-error">
+            <span class="help-block">{{{afFieldMessage name=this.atts.name}}}</span>
+        </div>
+        {{/if}}
+        <ul class="list-group">
+            {{#afEachArrayItem name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
+            <li class="list-group-item autoform-array-item">
+                {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
+                <button type="button" class="btn btn-block btn-danger autoform-remove-item">
+                    Delete Element
+                </button>
+                {{/if}}
+                <div class="autoform-array-item-body">
+                    {{> afQuickField name=this.current.type}} {{> UI.dynamic template=currentActionType}}
+                </div>
+            </li>
+            {{/afEachArrayItem}} {{#if afArrayFieldHasLessThanMaximum name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
+            <li class="list-group-item">
+                <button type="button" class="btn btn-success autoform-add-item" data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}" data-autoform-maxCount="{{this.atts.maxCount}}">
+                    <!--<span class="glyphicon glyphicon-plus"></span>-->
+                    Add Element
+                </button>
+            </li>
+            {{/if}}
+        </ul>
+    </div>
+</template>
+
+<template name="photoAction">
+    <h1>Photo</h1>
+</template>
+
+<template name="textAction">
+    <h1>Text</h1>
+</template>
+
